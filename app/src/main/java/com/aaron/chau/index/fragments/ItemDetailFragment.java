@@ -1,4 +1,4 @@
-package com.aaron.chau.index;
+package com.aaron.chau.index.fragments;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aaron.chau.index.activities.ItemDetailActivity;
+import com.aaron.chau.index.MainActivity;
+import com.aaron.chau.index.R;
 import com.aaron.chau.index.dummy.DummyContent;
 
 /**
  * A fragment representing a single Item detail screen.
- * This fragment is either contained in a {@link ItemListActivity}
+ * This fragment is either contained in a {@link MainActivity}
  * in two-pane mode (on tablets) or a {@link ItemDetailActivity}
  * on handsets.
  */

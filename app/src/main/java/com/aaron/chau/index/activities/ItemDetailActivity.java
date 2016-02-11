@@ -1,4 +1,4 @@
-package com.aaron.chau.index;
+package com.aaron.chau.index.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.aaron.chau.index.MainActivity;
+import com.aaron.chau.index.R;
+import com.aaron.chau.index.fragments.ItemDetailFragment;
+
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link ItemListActivity}.
+ * in a {@link MainActivity}.
  */
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -73,7 +77,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, ItemListActivity.class));
+            navigateUpTo(new Intent(this, MainActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
