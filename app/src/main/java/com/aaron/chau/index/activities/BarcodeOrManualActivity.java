@@ -120,7 +120,6 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
                     }
                 });
             }
-
         }
     }
 }
