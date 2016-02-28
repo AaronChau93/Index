@@ -36,6 +36,7 @@ public class MySqlViaPHP extends AsyncTask<String, Void, JSONArray> {
             final InputStream in = new BufferedInputStream(connection.getInputStream());
             final Scanner scanner = new Scanner(in).useDelimiter("\\A");
             final String response = scanner.hasNext() ? scanner.next() : "[]";
+            Log.d(TAG, "Response: " + response);
             jArr = new JSONArray(response);
             connection.disconnect();
         } catch (IOException | JSONException exception) {

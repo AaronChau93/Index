@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.aaron.chau.index.activities.AddItemActivity;
 import com.aaron.chau.index.activities.BarcodeOrManualActivity;
 import com.aaron.chau.index.activities.ItemDetailActivity;
 import com.aaron.chau.index.dummy.DummyContent;
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         mySQL = new MySqlViaPHP();
 //        try {
 //            JSONArray results = mySQL.execute(
-//                    "SELECT * FROM Branch WHERE branchNo = \"B003\""
+//                    "INSERT INTO Users(username, password, email) VALUES  (\"test3\", \"Index3456\", \"fakemail3@uw.edu\")"
 //            ).get();
 //            Log.d(TAG, "Query results: " + results.toString());
 //        } catch (Exception e) {
@@ -105,15 +104,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new MainIndexRecyclerViewAdapter(DummyContent.ITEMS));
     }
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public class MainIndexRecyclerViewAdapter
+            extends RecyclerView.Adapter<MainIndexRecyclerViewAdapter.ViewHolder> {
 
         private final List<DummyContent.DummyItem> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public MainIndexRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
             mValues = items;
         }
 

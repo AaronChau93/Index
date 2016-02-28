@@ -6,16 +6,24 @@ if (isset($_GET['sql'])) {
  
     // connecting to db
     $db = new DB_CONNECT();
+    $query = $_GET['sql'];
 
     // mysql inserting a new row
-    $result = mysql_query($_GET['sql']);
+    $result = mysql_query($query);
 
     // Add the results into an array.
     $resultAsArray = array();
-    if ($result) {
+    if ($result && strpos($query, "SELECT") == 0) {
         while($row = mysql_fetch_array($result)) {
             $resultAsArray[] = $row;
         }
+    } else if ($result && 
+        (strpos($query, "SELECT") == 0 
+            || strpos($query, "UPDATE") == 0 
+            || strpos($query, "DELETE") == 0)) {
+        $resultAsArray[] = "success";
+    } else {
+        $resultAsArray[] = json_encode(array("error" => mysql_error()));
     }
 
     // Echo the array as a json.

@@ -3,8 +3,8 @@
 /**
  * A class file to connect to database
  */
-class DB_CONNECT {
- 
+class DB_CONNECT { 
+
     // constructor
     function __construct() {
         // connecting to database
@@ -41,7 +41,6 @@ class DB_CONNECT {
         // closing db connection
         mysql_close();
     }
- 
 }
  
 ?>
