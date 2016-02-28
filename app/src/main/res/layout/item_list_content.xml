@@ -44,12 +44,11 @@
                         android:text="Name" />
 
                     <TextView
-                        android:id="@+id/itemListId"
+                        android:id="@+id/item_list_content_itemName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:text="Testing 2" />
+                        android:textAppearance="?attr/textAppearanceListItem" />
                 </TableRow>
                 <TableRow
                 android:layout_width="match_parent"
@@ -60,14 +59,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Price" />
+                android:text="Purchase Price" />
 
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Testing 4" />
+                    android:id="@+id/item_list_content_purchasePrice" />
                 </TableRow>
 
                 <TableRow
@@ -86,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Testing 4" />
+                    android:id="@+id/item_list_content_purchaseDate" />
                 </TableRow>
 
                 <TableRow
@@ -98,14 +97,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Current Price" />
+                android:text="Condition" />
 
                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:text="Testing 4" />
+                    android:id="@+id/item_list_content_itemCondition" />
                 </TableRow>
             </TableLayout>
 

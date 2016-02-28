@@ -17,7 +17,7 @@ if (isset($_POST['table']) && isset($_POST['cols']) && isset($_POST['data'])) {
     $db = new DB_CONNECT();
  
     // mysql inserting a new row
-    $result = mysql_query("INSERT INTO item(name, price, description) VALUES('$name', '$price', '$description')");
+    $result = mysql_query("INSERT INTO item(itemName, price, description) VALUES('$itemName', '$price', '$description')");
  
     // check if row inserted or not
     if ($result) {

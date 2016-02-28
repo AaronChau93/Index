@@ -25,10 +25,11 @@ import android.widget.TextView;
 
 import com.aaron.chau.index.activities.BarcodeOrManualActivity;
 import com.aaron.chau.index.activities.ItemDetailActivity;
-import com.aaron.chau.index.dummy.DummyContent;
+import com.aaron.chau.index.models.IndexContent;
 import com.aaron.chau.index.fragments.ItemDetailFragment;
 import com.aaron.chau.index.models.MySqlViaPHP;
 import com.aaron.chau.index.models.OnFragmentInteractionListener;
+import com.aaron.chau.index.models.UserItem;
 
 import org.json.JSONArray;
 
@@ -39,8 +40,8 @@ import java.util.List;
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
  * lead to a {@link ItemDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * item purchaseDate. On tablets, the activity presents the list of items and
+ * item purchaseDate side-by-side using two vertical panes.
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
@@ -95,7 +96,11 @@ public class MainActivity extends AppCompatActivity
         mySQL = new MySqlViaPHP();
 //        try {
 //            JSONArray results = mySQL.execute(
-//                    "INSERT INTO Users(username, password, email) VALUES  (\"test3\", \"Index3456\", \"fakemail3@uw.edu\")"
+//                    "SELECT username, rebate, purchaseDate, UserItems.itemCondition, barcodeNum, itemName, msrpPrice, description\n" +
+//                    "FROM Users JOIN Inventory ON (userId = ownerId)\n" +
+//                    "JOIN UserItems ON (Inventory.userItemId = UserItems.userItemIds)\n" +
+//                    "JOIN Items ON (UserItems.itemId = Items.itemId)\n" +
+//                    "JOIN ItemDescriptions ON (Items.itemDescriptionId = ItemDescriptions.idItemDescriptions)"
 //            ).get();
 //            Log.d(TAG, "Query results: " + results.toString());
 //        } catch (Exception e) {
@@ -104,15 +109,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new MainIndexRecyclerViewAdapter(DummyContent.ITEMS));
+        if(IndexContent.contentIsReady) {
+            recyclerView.setAdapter(new MainIndexRecyclerViewAdapter(IndexContent.ITEMS));
+        }
     }
 
     public class MainIndexRecyclerViewAdapter
             extends RecyclerView.Adapter<MainIndexRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<UserItem> mValues;
 
-        public MainIndexRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        public MainIndexRecyclerViewAdapter(List<UserItem> items) {
             mValues = items;
         }
 
@@ -125,16 +132,18 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mUserItem = mValues.get(position);
+            holder.mItemName.setText(mValues.get(position).item.itemName);
+            holder.mItemPurchasePrice.setText(mValues.get(position).purchasePrice.toString());
+            holder.mItemPurchaseDate.setText(mValues.get(position).purchaseDate);
+            holder.mItemCondition.setText(mValues.get(position).itemCondition);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mUserItem.item.itemName);
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -143,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mUserItem.item.itemName);
 
                         context.startActivity(intent);
                     }
@@ -157,21 +166,25 @@ public class MainActivity extends AppCompatActivity
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public View mView;
+            public TextView mItemName;
+            public TextView mItemPurchasePrice;
+            public TextView mItemPurchaseDate;
+            public TextView mItemCondition;
+            public UserItem mUserItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.itemListId);
-                mContentView = (TextView) view.findViewById(R.id.itemListContent);
+                mItemName = (TextView) view.findViewById(R.id.item_list_content_itemName);
+                mItemPurchasePrice = (TextView) view.findViewById(R.id.item_list_content_purchasePrice);
+                mItemPurchaseDate = (TextView) view.findViewById(R.id.item_list_content_purchaseDate);
+                mItemCondition = (TextView) view.findViewById(R.id.item_list_content_itemCondition);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mItemName.getText() + "'";
             }
         }
     }
