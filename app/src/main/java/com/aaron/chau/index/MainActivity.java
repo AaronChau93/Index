@@ -3,6 +3,7 @@ package com.aaron.chau.index;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +28,10 @@ import com.aaron.chau.index.activities.BarcodeOrManualActivity;
 import com.aaron.chau.index.activities.ItemDetailActivity;
 import com.aaron.chau.index.dummy.DummyContent;
 import com.aaron.chau.index.fragments.ItemDetailFragment;
+import com.aaron.chau.index.models.MySqlViaPHP;
 import com.aaron.chau.index.models.OnFragmentInteractionListener;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -40,12 +45,13 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
-
+    private static final String TAG = MainActivity.class.getName();
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    private AsyncTask<String, Void, JSONArray> mySQL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,16 @@ public class MainActivity extends AppCompatActivity
         // If this view is present, then the
         // activity should be in two-pane mode.
         mTwoPane = findViewById(R.id.item_detail_container) != null;
+
+        mySQL = new MySqlViaPHP();
+//        try {
+//            JSONArray results = mySQL.execute(
+//                    "SELECT * FROM Branch WHERE branchNo = \"B003\""
+//            ).get();
+//            Log.d(TAG, "Query results: " + results.toString());
+//        } catch (Exception e) {
+//            Log.e(TAG, "An error has occured: " + e.getMessage());
+//        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
