@@ -13,16 +13,11 @@ if (isset($_GET['sql'])) {
 
     // Add the results into an array.
     $resultAsArray = array();
-    if ($result && strpos($query, "SELECT") == 0) {
+    if ($result && strpos($query, "SELECT") === 0) {
         while($row = mysql_fetch_array($result)) {
             $resultAsArray[] = $row;
         }
-    } else if ($result && 
-        (strpos($query, "SELECT") == 0 
-            || strpos($query, "UPDATE") == 0 
-            || strpos($query, "DELETE") == 0)) {
-        $resultAsArray[] = "success";
-    } else {
+    } else if(!$result) {
         $resultAsArray[] = json_encode(array("error" => mysql_error()));
     }
 

@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ import android.widget.TextView;
 
 import com.aaron.chau.index.activities.BarcodeOrManualActivity;
 import com.aaron.chau.index.activities.ItemDetailActivity;
-import com.aaron.chau.index.models.IndexContent;
+import com.aaron.chau.index.models.UserInventory;
 import com.aaron.chau.index.fragments.ItemDetailFragment;
 import com.aaron.chau.index.models.MySqlViaPHP;
 import com.aaron.chau.index.models.OnFragmentInteractionListener;
@@ -33,7 +32,11 @@ import com.aaron.chau.index.models.UserItem;
 
 import org.json.JSONArray;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity
      * device.
      */
     private boolean mTwoPane;
-    private AsyncTask<String, Void, JSONArray> mySQL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         // Fragments
         // endFragments
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.editItemFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,25 +94,11 @@ public class MainActivity extends AppCompatActivity
         // If this view is present, then the
         // activity should be in two-pane mode.
         mTwoPane = findViewById(R.id.item_detail_container) != null;
-
-        mySQL = new MySqlViaPHP();
-//        try {
-//            JSONArray results = mySQL.execute(
-//                    "SELECT username, rebate, purchaseDate, UserItems.itemCondition, barcodeNum, itemName, msrpPrice, description\n" +
-//                    "FROM Users JOIN Inventory ON (userId = ownerId)\n" +
-//                    "JOIN UserItems ON (Inventory.userItemId = UserItems.userItemIds)\n" +
-//                    "JOIN Items ON (UserItems.itemId = Items.itemId)\n" +
-//                    "JOIN ItemDescriptions ON (Items.itemDescriptionId = ItemDescriptions.idItemDescriptions)"
-//            ).get();
-//            Log.d(TAG, "Query results: " + results.toString());
-//        } catch (Exception e) {
-//            Log.e(TAG, "An error has occured: " + e.getMessage());
-//        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        if(IndexContent.contentIsReady) {
-            recyclerView.setAdapter(new MainIndexRecyclerViewAdapter(IndexContent.ITEMS));
+        if(UserInventory.contentIsReady) {
+            recyclerView.setAdapter(new MainIndexRecyclerViewAdapter(UserInventory.ITEMS));
         }
     }
 
@@ -134,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mUserItem = mValues.get(position);
             holder.mItemName.setText(mValues.get(position).item.itemName);
-            holder.mItemPurchasePrice.setText(mValues.get(position).purchasePrice.toString());
+            holder.mItemPurchasePrice.setText(currencyFormat(mValues.get(position).purchasePrice));
             holder.mItemPurchaseDate.setText(mValues.get(position).purchaseDate);
             holder.mItemCondition.setText(mValues.get(position).itemCondition);
 
@@ -143,7 +131,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mUserItem.item.itemName);
+                        arguments.putString(ItemDetailFragment.USER_ITEM_ID, holder.mUserItem.item.itemName);
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -152,8 +140,7 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mUserItem.item.itemName);
-
+                        intent.putExtra(ItemDetailFragment.USER_ITEM_ID, holder.mUserItem.userItemId);
                         context.startActivity(intent);
                     }
                 }
@@ -242,4 +229,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onFragmentInteraction(Uri uri) {};
+
+    public static String currencyFormat(BigDecimal num) {
+        return new DecimalFormat().format(num);
+    }
 }

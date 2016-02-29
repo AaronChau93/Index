@@ -6,13 +6,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Aaron Chau on 2/28/2016.
  */
-public class UserItem {
+public class UserItem implements Serializable {
     private static final String UI_ID = "userItemId";
     private static final String UI_ITEMID = "itemId";
     private static final String UI_PURCHASEPRICE = "purchasePrice";
@@ -21,8 +22,10 @@ public class UserItem {
     private static final String UI_WARRANTYDATE = "warrantyDate";
     private static final String UI_CONDITION = "itemCondition";
 
-    public int userItemId;
-    public int itemId;
+    private AsyncTask<String, Void, JSONArray> mySQL;
+
+    public final int userItemId;
+    public final int itemId;
     public BigDecimal purchasePrice;
     public String purchaseDate;
     public BigDecimal rebate;
@@ -59,7 +62,7 @@ public class UserItem {
         this.warrantyDate = warrantyDate;
         this.itemCondition = itemCondition;
 
-        AsyncTask<String, Void, JSONArray> mySQL = new MySqlViaPHP();
+        mySQL = new MySqlViaPHP();
         try {
             JSONArray results = mySQL.execute(
                     "SELECT * FROM Items WHERE itemId = " + itemId
@@ -68,6 +71,19 @@ public class UserItem {
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean update() {
+        new MySqlViaPHP().execute(
+                "UPDATE UserItems " +
+                "SET " + UI_PURCHASEPRICE + "=" + purchasePrice.toString() +
+                "," + UI_PURCHASEDATE + "='" + purchaseDate + "'" +
+                "," + UI_REBATE + "=" + rebate +
+                "," + UI_WARRANTYDATE + "='" + warrantyDate + "'" +
+                "," + UI_CONDITION + "='" + itemCondition + "' " +
+                "WHERE userItemId=" + userItemId
+        );
+        return true;
     }
 
     @Override

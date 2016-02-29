@@ -1,6 +1,7 @@
 package com.aaron.chau.index.models;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.aaron.chau.index.models.MySqlViaPHP;
 import com.aaron.chau.index.models.UserItem;
@@ -20,7 +21,8 @@ import java.util.concurrent.ExecutionException;
  * Android template wizards.
  * <p/>
  */
-public class IndexContent {
+public class UserInventory {
+    private static final String TAG = UserInventory.class.getName();
 
     /**
      * An array of sample UserItems items.
@@ -37,10 +39,9 @@ public class IndexContent {
     static {
         contentIsReady = false;
         // Query for user items.
-        AsyncTask<String, Void, JSONArray> mySQL = new MySqlViaPHP();
         try {
-            JSONArray results = mySQL.execute(
-                    "SELECT * FROM UserItems"
+            JSONArray results = new MySqlViaPHP().execute(
+                    "SELECT * FROM UserItems" //Where userid = ...
             ).get();
             for (int i = 0; i < results.length(); i++) {
                 addItem(new UserItem(results.getJSONObject(i)));
