@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aaron.chau.index.R;
+import com.aaron.chau.index.models.UPCLookup;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.FocusingProcessor;
@@ -86,6 +87,13 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        myBarcodeFoundFlag = false;
+//        myBarcodeInfo.setText("");
+    }
+
     private void addNewItem() {
         addNewItem("");
     }
@@ -116,6 +124,7 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
                         myBarcodeInfo.setText(    // Update the TextView
                                 barcodes.valueAt(0).displayValue
                         );
+                        new UPCLookup().execute(barcodes.valueAt(0).displayValue);
                         addNewItem(barcodes.valueAt(0).displayValue);
                     }
                 });
