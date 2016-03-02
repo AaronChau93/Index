@@ -1,13 +1,13 @@
 package com.aaron.chau.index.models;
 
-import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -19,6 +19,7 @@ public class Item implements Serializable {
     private static final String I_NAME = "itemName";
     private static final String I_DESCRIPTIONID = "itemDescriptionId";
     private static final String I_MSRP = "msrpPrice";
+    public static final Map<Integer, Item> ITEM_MAP = new HashMap<>();
 
     public final int itemId;
     public String barcodeNum;
@@ -26,6 +27,7 @@ public class Item implements Serializable {
     public final int itemDescriptionId;
     public BigDecimal msrpPrice;
     public ItemDescription itemDescription;
+
 
     public Item(final JSONObject theItem) throws JSONException {
         this(theItem.getInt(I_ID),
@@ -42,12 +44,16 @@ public class Item implements Serializable {
         this.itemName = itemName;
         this.itemDescriptionId = itemDescriptionId;
         this.msrpPrice = new BigDecimal(msrpPrice);
-
+        ITEM_MAP.put(itemId, this);
         try {
-            JSONArray results = new MySqlViaPHP().execute(
-                    "SELECT * FROM ItemDescriptions WHERE itemDescriptionId = " + itemDescriptionId
-            ).get();
-            this.itemDescription = new ItemDescription(results.getJSONObject(0));
+            if(ItemDescription.ITEM_DESC_MAP.containsKey(itemDescriptionId)) {
+                this.itemDescription = ItemDescription.ITEM_DESC_MAP.get(itemDescriptionId);
+            } else {
+                JSONArray results = new MySqlViaPHP().execute(
+                        "SELECT * FROM ItemDescriptions WHERE itemDescriptionId = " + itemDescriptionId
+                ).get();
+                this.itemDescription = new ItemDescription(results.getJSONObject(0));
+            }
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }

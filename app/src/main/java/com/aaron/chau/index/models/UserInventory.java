@@ -1,11 +1,5 @@
 package com.aaron.chau.index.models;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.aaron.chau.index.models.MySqlViaPHP;
-import com.aaron.chau.index.models.UserItem;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +26,7 @@ public class UserInventory {
     /**
      * A map of sample UserItems items, by ID.
      */
-    public static final Map<Integer, UserItem> ITEM_MAP = new HashMap<>();
+    public static final Map<Integer, UserItem> USER_ITEM_MAP = new HashMap<>();
 
     public static boolean contentIsReady;
 
@@ -41,9 +35,9 @@ public class UserInventory {
     }
 
     private static void addItem(UserItem item) {
-        if (!ITEM_MAP.containsKey(item.userItemId)) {
+        if (!USER_ITEM_MAP.containsKey(item.userItemId)) {
             ITEMS.add(item);
-            ITEM_MAP.put(item.userItemId, item);
+            USER_ITEM_MAP.put(item.userItemId, item);
         }
     }
 
@@ -56,7 +50,7 @@ public class UserInventory {
             ).get();
             for (int i = 0; i < results.length(); i++) {
                 JSONObject userItem = results.getJSONObject(i);
-                if (!ITEM_MAP.containsKey(userItem.getInt("userItemId"))) {
+                if (!USER_ITEM_MAP.containsKey(userItem.getInt("userItemId"))) {
                     addItem(new UserItem(userItem));
                 }
             }

@@ -3,10 +3,6 @@ package com.aaron.chau.index.models;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +57,7 @@ public class UPCLookup extends AsyncTask<String, Void, Map<String, String>> {
         final String tail = "</b>";
         final int start = response.indexOf(head) + head.length();
         final int end = response.indexOf(tail);
-        return response.substring(start, end);
+        return cleanString(response.substring(start, end));
     }
 
     private String getDescription(StringBuilder response) {
@@ -69,6 +65,13 @@ public class UPCLookup extends AsyncTask<String, Void, Map<String, String>> {
         final String tail = "</td></tr> <tr>";
         final int start = response.indexOf(head) + head.length();
         final int end = response.indexOf(tail);
-        return response.substring(start, end);
+        return cleanString(response.substring(start, end));
+    }
+
+    public static String cleanString(String string) {
+        // The following characters can break a sql query. That is why we remove them.
+        return string.replaceAll("<[^>]*>", "")   // Removes html tags
+                     .replaceAll("&", ";amp;")    // Remove ampersands
+                     .replaceAll("#", ";pound;"); // Removes pounds symbol
     }
 }

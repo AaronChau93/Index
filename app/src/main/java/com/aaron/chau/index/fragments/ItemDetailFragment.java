@@ -1,8 +1,8 @@
 package com.aaron.chau.index.fragments;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aaron.chau.index.activities.ItemDetailActivity;
 import com.aaron.chau.index.MainActivity;
 import com.aaron.chau.index.R;
+import com.aaron.chau.index.activities.ItemDetailActivity;
 import com.aaron.chau.index.models.IndexCol;
 import com.aaron.chau.index.models.Item;
 import com.aaron.chau.index.models.ItemDescription;
@@ -69,7 +69,7 @@ public class ItemDetailFragment extends Fragment implements Serializable {
 
         if (getArguments().containsKey(USER_ITEM_ID)) {
             if (getArguments().getInt(USER_ITEM_ID) >= 0) {
-                mItem = UserInventory.ITEM_MAP.get(getArguments().getInt(USER_ITEM_ID));
+                mItem = UserInventory.USER_ITEM_MAP.get(getArguments().getInt(USER_ITEM_ID));
 
                 Activity activity = this.getActivity();
                 CollapsingToolbarLayout appBarLayout =

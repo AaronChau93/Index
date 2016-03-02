@@ -64,10 +64,14 @@ public class UserItem implements Serializable {
 
         mySQL = new MySqlViaPHP();
         try {
-            JSONArray results = mySQL.execute(
-                    "SELECT * FROM Items WHERE itemId = " + itemId
-            ).get();
-            this.item = new Item(results.getJSONObject(0));
+            if (Item.ITEM_MAP.containsKey(itemId)) {
+                this.item = Item.ITEM_MAP.get(itemId);
+            } else {
+                JSONArray results = mySQL.execute(
+                        "SELECT * FROM Items WHERE itemId = " + itemId
+                ).get();
+                this.item = new Item(results.getJSONObject(0));
+            }
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
         }

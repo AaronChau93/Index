@@ -2,15 +2,14 @@ package com.aaron.chau.index.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-import android.os.Handler;
 
 import com.aaron.chau.index.MainActivity;
 import com.aaron.chau.index.R;
@@ -24,6 +23,7 @@ import org.json.JSONException;
 import java.util.concurrent.ExecutionException;
 
 public class AddItemActivity extends AppCompatActivity {
+    private static final String TAG = AddItemActivity.class.getName();
     private EditText myItemNameET;
     private EditText myDescriptionET;
     private EditText myBarcodeET;
@@ -168,6 +168,7 @@ public class AddItemActivity extends AppCompatActivity {
     private int getDescriptionId() throws ExecutionException, InterruptedException, JSONException {
         final String desc = view2String(myDescriptionET);
         final int descId;
+        Log.d(TAG, desc);
         // Do a query
         JSONArray results = new MySqlViaPHP().execute(
                 "SELECT * " +
@@ -192,7 +193,7 @@ public class AddItemActivity extends AppCompatActivity {
     public static String view2String(View view) {
         String text = "\"";
         if (view instanceof EditText) {
-            text += ((EditText) view).getText().toString().trim();
+            text += UPCLookup.cleanString(((EditText) view).getText().toString().trim());
         }
         text += "\"";
         return text;
