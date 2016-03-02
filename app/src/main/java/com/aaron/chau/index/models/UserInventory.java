@@ -41,21 +41,24 @@ public class UserInventory {
     }
 
     private static void addItem(UserItem item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.userItemId, item);
+        if (!ITEM_MAP.containsKey(item.userItemId)) {
+            ITEMS.add(item);
+            ITEM_MAP.put(item.userItemId, item);
+        }
     }
 
     public static void refresh() {
         contentIsReady = false;
         // Query for user items.
         try {
-            ITEMS.clear();
-            ITEM_MAP.clear();
             JSONArray results = new MySqlViaPHP().execute(
                     "SELECT * FROM UserItems" //Where userid = ...
             ).get();
             for (int i = 0; i < results.length(); i++) {
-                addItem(new UserItem(results.getJSONObject(i)));
+                JSONObject userItem = results.getJSONObject(i);
+                if (!ITEM_MAP.containsKey(userItem.getInt("userItemId"))) {
+                    addItem(new UserItem(userItem));
+                }
             }
         } catch (InterruptedException | ExecutionException | JSONException e) {
             e.printStackTrace();
