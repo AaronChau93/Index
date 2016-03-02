@@ -13,12 +13,16 @@ if (isset($_GET['sql'])) {
 
     // Add the results into an array.
     $resultAsArray = array();
-    if ($result && strpos($query, "SELECT") === 0) {
-        while($row = mysql_fetch_array($result)) {
-            $resultAsArray[] = $row;
+    if ($result) {
+        if (strpos($query, "SELECT") === 0) {
+            while($row = mysql_fetch_array($result)) {
+                $resultAsArray[] = $row;
+            }
+        } else if (strpos($query, "INSERT") === 0) {
+            $resultAsArray[] = array('id'=>mysql_insert_id());
         }
     } else if(!$result) {
-        $resultAsArray[] = json_encode(array("error" => mysql_error()));
+        $resultAsArray[] = array('error'=>mysql_error(), 'query'=>$query);
     }
 
     // Echo the array as a json.

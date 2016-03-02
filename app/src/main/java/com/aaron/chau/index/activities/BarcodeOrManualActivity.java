@@ -27,11 +27,14 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class BarcodeOrManualActivity extends AppCompatActivity {
     private static final String TAG = BarcodeOrManualActivity.class.getName();
     private SurfaceView myCameraView;
     private TextView myBarcodeInfo;
+    private Button myAddManuallyBtn;
     private CameraSource myCameraSource;
     private boolean myBarcodeFoundFlag;
 
@@ -71,7 +74,8 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
@@ -79,10 +83,11 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
             }
         });
 
-        ((Button) findViewById(R.id.addManually)).setOnClickListener(new View.OnClickListener() {
+        myAddManuallyBtn = (Button) findViewById(R.id.addManually);
+        myAddManuallyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewItem();
+                addNewItem(null);
             }
         });
     }
@@ -91,16 +96,17 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         myBarcodeFoundFlag = false;
-//        myBarcodeInfo.setText("");
+        myBarcodeInfo.setText("");
+        myAddManuallyBtn.setEnabled(true);
     }
 
-    private void addNewItem() {
-        addNewItem("");
-    }
-    private void addNewItem(final String theBarcode) {
+    private void addNewItem(final Map<String, String> params) {
         Intent intent = new Intent(this, AddItemActivity.class);
-        if (!theBarcode.isEmpty())
-            intent.putExtra("barcode", theBarcode);
+        if (params != null && !params.isEmpty()) {
+            for (String key : params.keySet()) {
+                intent.putExtra(key, params.get(key));
+            }
+        }
         startActivity(intent);
     }
 
@@ -121,11 +127,15 @@ public class BarcodeOrManualActivity extends AppCompatActivity {
                 myBarcodeInfo.post(new Runnable() {    // Use the post method of the TextView
                     public void run() {
                         myBarcodeFoundFlag = true;
+                        myAddManuallyBtn.setEnabled(false);
                         myBarcodeInfo.setText(    // Update the TextView
                                 barcodes.valueAt(0).displayValue
                         );
-                        new UPCLookup().execute(barcodes.valueAt(0).displayValue);
-                        addNewItem(barcodes.valueAt(0).displayValue);
+                        try {
+                            addNewItem(new UPCLookup().execute(barcodes.valueAt(0).displayValue).get());
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

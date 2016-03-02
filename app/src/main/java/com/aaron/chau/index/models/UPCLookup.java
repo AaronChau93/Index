@@ -20,10 +20,12 @@ import java.util.Scanner;
  * Created by Aaron Chau on 2/28/2016.
  */
 public class UPCLookup extends AsyncTask<String, Void, Map<String, String>> {
+    private static final boolean DEBUG = false;
     private static final String TAG = UPCLookup.class.getName();
     private static final String LINK = "http://www.digit-eyes.com/cgi-bin/digiteyes.cgi?upcCode=";
     public static final String TITLE = "title";
     public static final String DESCRIPTION = "description";
+    public static final String BARCODE = "barcode";
 
     @Override
     protected Map<String, String> doInBackground(String... theBarcode) {
@@ -37,10 +39,16 @@ public class UPCLookup extends AsyncTask<String, Void, Map<String, String>> {
             final Scanner scanner = new Scanner(in);
             StringBuilder response = new StringBuilder();
             while (scanner.hasNext()) response.append(scanner.next() + " ");
+
+            // TODO: Check if response contains an error.
             details.put(TITLE, getTitle(response));
-            Log.d(TAG, "Response: " + response);
-            Log.d(TAG, "Title: " + getTitle(response));
-            Log.d(TAG, "Description: " + getDescription(response));
+            details.put(DESCRIPTION, getDescription(response));
+            details.put(BARCODE, code);
+            if (DEBUG) {
+                Log.d(TAG, "Response: " + response);
+                Log.d(TAG, "Title: " + getTitle(response));
+                Log.d(TAG, "Description: " + getDescription(response));
+            }
             connection.disconnect();
         } catch (IOException exception) {
             Log.e(TAG, "Error: " + exception.getMessage());

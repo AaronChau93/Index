@@ -37,9 +37,20 @@ public class UserInventory {
     public static boolean contentIsReady;
 
     static {
+        refresh();
+    }
+
+    private static void addItem(UserItem item) {
+        ITEMS.add(item);
+        ITEM_MAP.put(item.userItemId, item);
+    }
+
+    public static void refresh() {
         contentIsReady = false;
         // Query for user items.
         try {
+            ITEMS.clear();
+            ITEM_MAP.clear();
             JSONArray results = new MySqlViaPHP().execute(
                     "SELECT * FROM UserItems" //Where userid = ...
             ).get();
@@ -51,10 +62,5 @@ public class UserInventory {
         } finally {
             contentIsReady = true;
         }
-    }
-
-    private static void addItem(UserItem item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.userItemId, item);
     }
 }

@@ -1,5 +1,6 @@
 package com.aaron.chau.index;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_profile) {
 
         } else if (id == R.id.nav_settings) {

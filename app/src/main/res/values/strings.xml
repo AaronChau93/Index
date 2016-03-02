@@ -20,4 +20,5 @@
     <string name="item_detail_warrantyDate">Warranty Date:</string>
     <string name="item_detail_lentOn">Lent on:</string>
     <string name="item_detail_lentTo">Lent to:</string>
+    <string name="item_detail_rebate">Rebate:</string>
 </resources>
