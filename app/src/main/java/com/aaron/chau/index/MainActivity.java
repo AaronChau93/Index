@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.USER_ITEM_ID, holder.mUserItem.item.itemName);
+                        arguments.putInt(ItemDetailFragment.USER_ITEM_ID, holder.mUserItem.userItemId);
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -133,7 +133,10 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.USER_ITEM_ID, holder.mUserItem.userItemId);
+                        intent.putExtra(ItemDetailFragment.USER_ITEM_ID,
+                                holder.mUserItem.userItemId);
+                        intent.putExtra(ItemDetailFragment.INVENTORY_ITEM_ID,
+                                UserInventory.getIdByUserItem(holder.mUserItem));
                         context.startActivity(intent);
                     }
                 }

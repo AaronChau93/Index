@@ -34,11 +34,28 @@ public class UserInventory {
         refresh();
     }
 
-    private static void addItem(UserItem item) {
-        if (!USER_ITEM_MAP.containsKey(item.userItemId)) {
+    public static void addItem(UserItem item) {
+        if (item != null && !USER_ITEM_MAP.containsKey(item.userItemId)) {
             ITEMS.add(item);
             USER_ITEM_MAP.put(item.userItemId, item);
         }
+    }
+
+    public static void remove(int inventoryItemId) {
+        if (inventoryItemId != -1) {
+            ITEMS.remove(USER_ITEM_MAP.remove(inventoryItemId));
+        }
+    }
+
+    public static int getIdByUserItem(UserItem item) {
+        if (item != null) {
+            for(int invId : USER_ITEM_MAP.keySet()) {
+                if (USER_ITEM_MAP.get(invId).userItemId == item.userItemId) {
+                    return invId;
+                }
+            }
+        }
+        return -1;
     }
 
     public static void refresh() {
@@ -46,7 +63,11 @@ public class UserInventory {
         // Query for user items.
         try {
             JSONArray results = new MySqlViaPHP().execute(
-                    "SELECT * FROM UserItems" //Where userid = ...
+                    // Consider doing a huge join and just use that instead.
+                    "SELECT * " +
+                            "FROM Inventory JOIN UserItems " +
+                                "ON Inventory.userItemId = UserItems.userItemId " +
+                            "WHERE Inventory.ownerId = 1" //Where onwerId = ...
             ).get();
             for (int i = 0; i < results.length(); i++) {
                 JSONObject userItem = results.getJSONObject(i);

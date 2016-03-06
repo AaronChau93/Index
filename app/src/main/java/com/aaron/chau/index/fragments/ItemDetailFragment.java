@@ -36,16 +36,9 @@ public class ItemDetailFragment extends Fragment implements Serializable {
     private static final String TAG = ItemDetailFragment.class.getName();
     private static final String IDF_EDITING = "isEditing";
 
-
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
     public static final String USER_ITEM_ID = "ITEM";
+    public static final String INVENTORY_ITEM_ID = "INV_ITEM";
 
-    /**
-     * The UserItem this fragment is presenting.
-     */
     private UserItem mItem;
 
     private Map<IndexCol, View> myTextViews;
