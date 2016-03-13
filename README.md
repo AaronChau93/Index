@@ -19,6 +19,15 @@ Winter - UWT CSS 445 Database Project
 ## Implementation
 Index was made using AndroidStudio. It is executing SQL code by opening an http url connection and getting the JSONArray results from a specific link. However, the link is public and not secure. This will allow any person with the link to inject SQL code and do select, insert, update and delete on data in any available tables for the Index DB. The http connection is also not using POST to hide the SQL code being sent from my app to the web page. I do not reccomend or would advise anyone to run SQL code this way, however, do to the limited time and circumstances (such as all IPs trying to connect to a student MySQL database being blocked if your IP address is outside of the University of Washington IP range), this is my work around to connect to my MySQL DB. 
 * MySQL code can be found in the following files: AddItemActivity.java, ItemDetailActivity.java, Login.java, Regsiter.java, Item.java, ItemDescription.java, UserInventory.java, UserItem.java 
+* When you open the app, you will be prompted to login. You can either use one of the following accounts:
+	* Account 1:
+		* Username: test1
+		* Password: Index1234
+	* Account 2:
+		* Username: test2
+		* Password: Index2345
+	* Or you can make your own account and log in with that. I suggest using a fake email and password as the password is not hashed on the DB. 
+
 
 ## Instructions to side load the project
 
