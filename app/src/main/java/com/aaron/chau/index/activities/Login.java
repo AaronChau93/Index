@@ -134,7 +134,7 @@ public class Login extends AppCompatActivity {
                 Log.e(TAG, e.getMessage());
             }
             v.setEnabled(true);
-            myRegisterBtn.setEnabled(false);
+            myRegisterBtn.setEnabled(true);
         }
     }
 
