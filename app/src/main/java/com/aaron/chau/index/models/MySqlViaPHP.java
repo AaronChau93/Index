@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -37,10 +38,17 @@ public class MySqlViaPHP extends AsyncTask<String, Void, JSONArray> {
             final InputStream in = new BufferedInputStream(connection.getInputStream());
             final Scanner scanner = new Scanner(in).useDelimiter("\\A");
             final String response = scanner.hasNext() ? scanner.next() : "[]";
-            if(DEBUG) {
-                Log.d(TAG, "Response: " + response);
-            }
+            if (DEBUG) Log.d(TAG, "SQL: " + sqlCode);
+            if (DEBUG) Log.d(TAG, "Response: " + response);
             jArr = new JSONArray(response);
+            if (jArr.length() == 1) {
+                JSONObject jObj = jArr.getJSONObject(0);
+                if (!jObj.isNull("error")) {
+                    jArr = new JSONArray();
+                    if(DEBUG) Log.e(TAG, "Error: " + jObj.getString("error"));
+                }
+
+            }
             connection.disconnect();
         } catch (IOException | JSONException exception) {
             Log.e(TAG, "Error: " + exception.getMessage());

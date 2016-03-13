@@ -115,8 +115,9 @@ public class ItemDetailActivity extends AppCompatActivity {
                         );
                     UserInventory.remove(invItemId);
                     Intent backToMain = new Intent(ItemDetailActivity.this, MainActivity.class);
-                    backToMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    backToMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(backToMain);
+                    finish();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

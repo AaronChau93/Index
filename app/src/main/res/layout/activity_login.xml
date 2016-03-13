@@ -21,7 +21,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/loginUsername"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true" />
 
@@ -31,7 +31,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Password"
         android:id="@+id/textView3"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/loginUsername"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/loginPassword"
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true" />
 
@@ -47,17 +47,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText2"
+        android:id="@+id/loginLoginBtn"
+        android:layout_below="@+id/loginPassword"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
-        android:id="@+id/button2"
-        android:layout_below="@+id/button"
-        android:layout_alignStart="@+id/button"
+        android:id="@+id/loginRegisterBtn"
+        android:layout_below="@+id/loginLoginBtn"
+        android:layout_alignStart="@+id/loginLoginBtn"
         android:layout_marginTop="101dp" />
 
     <TextView
@@ -66,7 +66,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Don&apos;t have an account?"
         android:id="@+id/textView4"
-        android:layout_alignBottom="@+id/button2"
+        android:layout_alignBottom="@+id/loginRegisterBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
         android:textAlignment="center" />

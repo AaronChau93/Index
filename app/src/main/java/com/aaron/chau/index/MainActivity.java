@@ -2,6 +2,7 @@ package com.aaron.chau.index;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,9 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aaron.chau.index.activities.BarcodeOrManualActivity;
 import com.aaron.chau.index.activities.ItemDetailActivity;
+import com.aaron.chau.index.activities.Login;
 import com.aaron.chau.index.fragments.ItemDetailFragment;
 import com.aaron.chau.index.models.OnFragmentInteractionListener;
 import com.aaron.chau.index.models.UserInventory;
@@ -42,6 +45,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getName();
+    private UserInventory myUserInventory;
+    private static int userId;
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -56,8 +62,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.mainAppToolbar);
         setSupportActionBar(toolbar);
 
-        // Fragments
-        // endFragments
+        userId = getSharedPreferences("userSession", Context.MODE_PRIVATE).getInt("userId", -1);
+        new UserInventory();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.editItemFab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -213,10 +219,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
 
-        } else if (id == R.id.nav_profile) {
-
-        } else if (id == R.id.nav_settings) {
-
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -228,5 +232,22 @@ public class MainActivity extends AppCompatActivity
 
     public static String currencyFormat(BigDecimal num) {
         return new DecimalFormat().format(num);
+    }
+
+    public static int getUserId() {
+        return userId;
+    }
+
+    private void logout() {
+        SharedPreferences userPref = getSharedPreferences("userSession", Context.MODE_PRIVATE);
+        SharedPreferences.Editor userPrefEditor = userPref.edit();
+        userPrefEditor.remove("username");
+        userPrefEditor.remove("sessionId");
+        userPrefEditor.apply();
+        Intent backToLogin = new Intent(this, Login.class);
+        backToLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(backToLogin);
+        Toast.makeText(this, "Logged out!", Toast.LENGTH_LONG).show();
+        finish();
     }
 }

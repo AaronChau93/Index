@@ -100,15 +100,13 @@ public class AddItemActivity extends AppCompatActivity {
             // save into user inventory
             new MySqlViaPHP().execute(
                     "INSERT INTO Inventory(ownerId, userItemId) " +
-                            "VALUES (" + 1 + "," + userItemId + ")"
-                    // Use 1 as the ownerId because I currently don't have users setup.
-                    // Todo: Setup users and use the correct ownerId.
+                            "VALUES (" + MainActivity.getUserId() + "," + userItemId + ")"
             ).get();
 
             UserInventory.refresh();
 
             Intent mainIntent = new Intent(this, MainActivity.class);
-            mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(mainIntent);
             finish();
         } catch (InterruptedException | ExecutionException | JSONException e) {
@@ -191,12 +189,16 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     public static String view2String(View view) {
-        String text = "\"";
+
         if (view instanceof EditText) {
-            text += UPCLookup.cleanString(((EditText) view).getText().toString().trim());
+            return addQuotes2String(UPCLookup.cleanString(((EditText) view).getText().toString().trim()));
         }
-        text += "\"";
-        return text;
+
+        return addQuotes2String("");
+    }
+
+    public static String addQuotes2String(String theString) {
+        return "\"" + theString + "\"";
     }
 
     @Override

@@ -1,5 +1,11 @@
 package com.aaron.chau.index.models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.aaron.chau.index.MainActivity;
+import com.aaron.chau.index.activities.AddItemActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -15,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  * Android template wizards.
  * <p/>
  */
-public class UserInventory {
+public final class UserInventory {
     private static final String TAG = UserInventory.class.getName();
 
     /**
@@ -30,7 +37,9 @@ public class UserInventory {
 
     public static boolean contentIsReady;
 
-    static {
+    public UserInventory() {
+        ITEMS.clear();
+        USER_ITEM_MAP.clear();
         refresh();
     }
 
@@ -67,7 +76,7 @@ public class UserInventory {
                     "SELECT * " +
                             "FROM Inventory JOIN UserItems " +
                                 "ON Inventory.userItemId = UserItems.userItemId " +
-                            "WHERE Inventory.ownerId = 1" //Where onwerId = ...
+                            "WHERE Inventory.ownerId = " + MainActivity.getUserId()
             ).get();
             for (int i = 0; i < results.length(); i++) {
                 JSONObject userItem = results.getJSONObject(i);
