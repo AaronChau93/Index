@@ -32,18 +32,20 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Remove the back button on the login page. Not sure why it's there in the first place.
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        // Check if the user is already logged in.
         SharedPreferences userPref = getSharedPreferences("userSession", Context.MODE_PRIVATE);
         final String username = userPref.getString("username", "\"\"");
         final String session = userPref.getString("sessionId", "\"\"");
-        Log.d(TAG, "Session username: " + username + ", sessionId: " + session);
+//        Log.d(TAG, "Session username: " + username + ", sessionId: " + session);
         if (sessionIsValid(username, session)) {
-            Log.d(TAG, "Session is valid.");
+//            Log.d(TAG, "Session is valid.");
             goToMain();
         } else {
-            Log.d(TAG, "Session is invalid.");
+//            Log.d(TAG, "Session is invalid.");
             myUsername = (EditText) findViewById(R.id.loginUsername);
             myPassword = (EditText) findViewById(R.id.loginPassword);
             myLoginBtn = (Button) findViewById(R.id.loginLoginBtn);
@@ -70,10 +72,10 @@ public class Login extends AppCompatActivity {
                             "WHERE username = " + theUsername + " " +
                             "AND sessionId = " + theSession
             ).get();
-            Log.d(TAG, "sessionIsValid: results = " + results.toString());
+//            Log.d(TAG, "sessionIsValid: results = " + results.toString());
             return results.length() == 1;
         } catch (Exception e) {
-            Log.d(TAG, "Session check failed. - " + e.getMessage());
+//            Log.d(TAG, "Session check failed. - " + e.getMessage());
         }
         return false;
     }
@@ -107,12 +109,12 @@ public class Login extends AppCompatActivity {
                 ).get();
                 if (results.length() == 0) {
                     // Error. User and password combination not found.
-                    Log.d(TAG, "User not found.");
-                    Toast.makeText(Login.this, "Could not find user and password combination.",
+//                    Log.d(TAG, "User not found.");
+                    Toast.makeText(Login.this, "Could not find this user and password combination.",
                             Toast.LENGTH_LONG).show();
                 } else if (results.length() == 1) {
                     // Found the user.
-                    Log.d(TAG, "Found user. Logging in!");
+//                    Log.d(TAG, "Found user. Logging in!");
                     final String sessionId = AddItemActivity.addQuotes2String(generateSessionId());
                     SharedPreferences userPref = getSharedPreferences("userSession", Context.MODE_PRIVATE);
                     SharedPreferences.Editor userPrefEditor = userPref.edit();

@@ -166,7 +166,7 @@ public class AddItemActivity extends AppCompatActivity {
     private int getDescriptionId() throws ExecutionException, InterruptedException, JSONException {
         final String desc = view2String(myDescriptionET);
         final int descId;
-        Log.d(TAG, desc);
+//        Log.d(TAG, desc);
         // Do a query
         JSONArray results = new MySqlViaPHP().execute(
                 "SELECT * " +

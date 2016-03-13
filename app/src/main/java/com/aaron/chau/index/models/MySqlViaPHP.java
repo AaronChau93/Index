@@ -18,7 +18,7 @@ import java.util.Scanner;
  * Created by Aaron Chau on 2/27/2016.
  */
 public class MySqlViaPHP extends AsyncTask<String, Void, JSONArray> {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String TAG = MySqlViaPHP.class.getName();
     private static final String LINK =
             "https://students.washington.edu/chau93/index_app/query.php?sql=";

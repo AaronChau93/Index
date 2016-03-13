@@ -80,7 +80,7 @@ public class ItemDetailFragment extends Fragment implements Serializable {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "View created.");
+//        Log.d(TAG, "View created.");
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
         myTextViews = new TreeMap<>();
         myEditTexts = new TreeMap<>();
