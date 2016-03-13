@@ -41,6 +41,9 @@ Index was made using AndroidStudio. It is executing SQL code by opening an http 
 * Choose your phone and press "OK"
 
 ### Method 2
+* Clone the project to your local machine.
+* Using Android Studio, open an existing project.
+* Build the project by using Gradle. In AndroidStudio find "Build" (ALT+B) and choose "Rebuild Project" in the toolbar. 
 * Go to the following directory: Index/app/build/outputs/apk
 * Inside you will see app-debug.apk and app-debug-unaligned.apk
 * Copy app-debug.apk into your phone. You can do this by attaching your phone to the computer and dragging it into the root of your phone or placing it in dropbox, emailing, etc. 
